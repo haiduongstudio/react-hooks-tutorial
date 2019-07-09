@@ -1,26 +1,34 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import { useFetch } from './useFetch';
 
-function App() {
+const App = () => {
+  const [count, setCount] = useState(0);
+  const { data } = useFetch(
+    'https://raw.githubusercontent.com/ajzbc/kanye.rest/master/quotes.json'
+  );
+  const computeLongestWord = (arr) => {
+    if (!arr) {
+      return [];
+    }
+    console.log('Computing longest world');
+    let longestWorld = '';
+    JSON.parse(arr).forEach(sentence =>
+      sentence.split(' ').forEach(word => {
+        if (word.length > longestWorld.length) {
+          longestWorld = word;
+        }
+      })
+    );
+    return longestWorld;
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <div>count: {count}</div>
+      <button onClick={() => setCount(count + 1)}>increment</button>
+      <div>{computeLongestWord(data)}</div>
     </div>
   );
-}
+};
 
 export default App;
