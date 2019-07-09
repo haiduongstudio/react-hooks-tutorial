@@ -1,26 +1,27 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useCallback, useEffect } from 'react';
+import Hello from './Hello';
+import Square from './Square';
 
-function App() {
+const App = () => {
+  const [count, setCount] = useState(0);
+  const favoriteNums = [7, 21, 37];
+
+  const increment = useCallback(
+    n => {
+      setCount(c => c + n);
+    },
+    [setCount]
+  );
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Hello increment={increment} />
+      <div>count: {count}</div>
+      {favoriteNums.map(n => {
+        return <Square onClick={() => increment(n)} n={n} key={n} />;
+      })}
     </div>
   );
-}
+};
 
 export default App;
